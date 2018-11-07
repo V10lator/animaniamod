@@ -94,9 +94,7 @@ public class GenericAIFindSaltLick extends GenericAISearchBlock
 	@Override
 	protected boolean shouldMoveTo(World worldIn, BlockPos pos)
 	{
-		Block block = worldIn.getBlockState(pos).getBlock();
-
-		return block == BlockHandler.blockSaltLick;
+		return GenericAISearchBlock.getWeakState(worldIn, pos).block == BlockHandler.blockSaltLick;
 	}
 
 }

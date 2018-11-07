@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.animania.common.entities.interfaces.IFoodEating;
 import com.animania.common.entities.interfaces.ISleeping;
 import com.animania.common.handler.BlockHandler;
+import com.animania.common.helper.WeakBlockState;
 import com.animania.common.tileentities.TileEntityTrough;
 import com.animania.config.AnimaniaConfig;
 
@@ -133,10 +134,9 @@ public class GenericAIFindFood<T extends EntityCreature & IFoodEating> extends G
 	@Override
 	protected boolean shouldMoveTo(World world, BlockPos pos)
 	{
-		IBlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
+		WeakBlockState ws = GenericAISearchBlock.getWeakState(world, pos);
 
-		if (block == BlockHandler.blockTrough)
+		if (ws.block == BlockHandler.blockTrough)
 		{
 			TileEntityTrough trough = (TileEntityTrough) world.getTileEntity(pos);
 			if (trough != null)
@@ -148,7 +148,7 @@ public class GenericAIFindFood<T extends EntityCreature & IFoodEating> extends G
 
 		if (eatBlocks)
 		{
-			if (isBlockFood(block))
+			if (isBlockFood(ws.block))
 			{
 				return true;
 			}

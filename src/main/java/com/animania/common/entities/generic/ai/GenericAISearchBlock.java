@@ -3,7 +3,10 @@ package com.animania.common.entities.generic.ai;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+
+import com.animania.common.helper.WeakBlockState;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityCreature;
@@ -13,7 +16,6 @@ import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -36,6 +38,8 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 	protected BlockPos seekingBlockPos = NO_POS;
 
 	public static final BlockPos NO_POS = new BlockPos(-1, -1, -1);
+	
+	public static final HashMap<Integer, WeakBlockState> stateCache = new HashMap<Integer, WeakBlockState>();
 
 	public GenericAISearchBlock(EntityCreature creature, double speedIn, int range, EnumFacing... destinationOffset)
 	{
@@ -158,9 +162,7 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 							{
 								BlockPos offsetPos = blockpos1.offset(facing);
 
-								AxisAlignedBB aabb = world.getBlockState(blockpos1).getCollisionBoundingBox(world, blockpos1);
-
-								if (aabb == Block.NULL_AABB)
+								if (GenericAISearchBlock.getWeakState(world, blockpos1).aabb == Block.NULL_AABB)
 									offsetPos = blockpos1;
 
 								if (this.creature.getNavigator().getPathToXYZ(offsetPos.getX() + 0.5, offsetPos.getY(), offsetPos.getZ() + 0.5) != null)
@@ -179,6 +181,20 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 		return false;
 	}
 
+	protected static WeakBlockState getWeakState(World world, BlockPos pos)
+	{
+		int hash = WeakBlockState.getHash(world.provider.getDimension(), pos);
+		WeakBlockState ws = GenericAISearchBlock.stateCache.get(hash);
+
+		if(ws == null)
+		{
+			ws = new WeakBlockState(world, pos, world.getBlockState(pos));
+			GenericAISearchBlock.stateCache.put(hash, ws);
+		}
+
+		return ws;
+	}
+	
 	protected boolean pathExists(BlockPos start, BlockPos end)
 	{
 		try

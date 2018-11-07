@@ -1,6 +1,7 @@
 package com.animania.common.handler;
 
 import com.animania.common.ModSoundEvents;
+import com.animania.common.events.BlockChangeHandler;
 import com.animania.common.events.CapabilityLoadHandler;
 import com.animania.common.events.CarryRenderer;
 import com.animania.common.events.EggThrowHandler;
@@ -30,6 +31,7 @@ public class EventsHandler
         MinecraftForge.EVENT_BUS.register(new CarryRenderer());
         MinecraftForge.TERRAIN_GEN_BUS.register(new EventBeehiveDecorator());
         MinecraftForge.EVENT_BUS.register(new BlockHandler());
+        MinecraftForge.EVENT_BUS.register(new BlockChangeHandler());
 
     }
 }

@@ -38,7 +38,7 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 	protected BlockPos seekingBlockPos = NO_POS;
 
 	public static final BlockPos NO_POS = new BlockPos(-1, -1, -1);
-	
+
 	public static final HashMap<Integer, WeakBlockState> stateCache = new HashMap<Integer, WeakBlockState>();
 
 	public GenericAISearchBlock(EntityCreature creature, double speedIn, int range, EnumFacing... destinationOffset)
@@ -160,10 +160,7 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 
 							for (EnumFacing facing : destinationOffset)
 							{
-								BlockPos offsetPos = blockpos1.offset(facing);
-
-								if (GenericAISearchBlock.getWeakState(world, blockpos1).aabb == Block.NULL_AABB)
-									offsetPos = blockpos1;
+								BlockPos offsetPos = GenericAISearchBlock.getWeakState(world, blockpos1).aabb == Block.NULL_AABB ? blockpos1 : blockpos1.offset(facing);
 
 								if (this.creature.getNavigator().getPathToXYZ(offsetPos.getX() + 0.5, offsetPos.getY(), offsetPos.getZ() + 0.5) != null)
 								{

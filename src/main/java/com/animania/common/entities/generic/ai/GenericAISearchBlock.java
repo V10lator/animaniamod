@@ -33,6 +33,8 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 	private boolean isAtDestination;
 	protected final int searchRange;
 	protected World world;
+	/** Old blockPos */
+	private BlockPos oldBlockPos = NO_POS;
 
 	protected List<EnumFacing> destinationOffset;
 	protected BlockPos seekingBlockPos = NO_POS;
@@ -58,7 +60,7 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 	 */
 	public boolean shouldExecute()
 	{
-		if (!this.seekingBlockPos.equals(NO_POS))
+		if (this.seekingBlockPos != NO_POS)
 			return true;
 
 		return this.searchForDestination();
@@ -140,9 +142,12 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 	 */
 	protected boolean searchForDestination()
 	{
-		int i = this.searchRange;
-		int j = 1;
 		BlockPos blockpos = new BlockPos(this.creature);
+		if(blockpos.equals(oldBlockPos))
+			return false;
+		oldBlockPos = blockpos;
+		
+		int i = this.searchRange;
 
 		for (int k = 0; k <= 1; k = k > 0 ? -k : 1 - k)
 		{

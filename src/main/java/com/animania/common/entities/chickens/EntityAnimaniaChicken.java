@@ -14,8 +14,6 @@ import com.animania.common.entities.chickens.ai.EntityAIWatchClosestFromSide;
 import com.animania.common.entities.generic.ai.GenericAIAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
-import com.animania.common.entities.generic.ai.GenericAIHurtByTarget;
-import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
 import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAISwimmingSmallCreatures;
@@ -33,6 +31,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -95,11 +95,11 @@ public class EntityAnimaniaChicken extends EntityChicken implements IAnimaniaAni
 		this.tasks.addTask(6, new GenericAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosestFromSide(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(8, new GenericAIAvoidWater(this));
-		this.tasks.addTask(11, new GenericAILookIdle(this));
+		this.tasks.addTask(11, new EntityAILookIdle(this));
 		if (AnimaniaConfig.gameRules.animalsSleep) {
 			this.tasks.addTask(12, new GenericAISleep<EntityAnimaniaChicken>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.chickenBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.chickenBed2), EntityAnimaniaChicken.class));
 		}
-		this.targetTasks.addTask(13, new GenericAIHurtByTarget(this, false, new Class[0]));
+		this.targetTasks.addTask(13, new EntityAIHurtByTarget(this, false, new Class[0]));
 		this.fedTimer = AnimaniaConfig.careAndFeeding.feedTimer + this.rand.nextInt(100);
 		this.wateredTimer = AnimaniaConfig.careAndFeeding.waterTimer + this.rand.nextInt(100);
 		this.happyTimer = 60;

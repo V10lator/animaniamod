@@ -159,6 +159,9 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 					{
 						BlockPos blockpos1 = blockpos.add(i1, k - 1, j1);
 
+						if(world.getChunkProvider().getLoadedChunk(blockpos1.getX() >> 4, blockpos1.getZ() >> 4) == null)
+							continue;
+
 						if (this.shouldMoveTo(this.creature.world, blockpos1))
 						{
 							Collections.shuffle(destinationOffset);

@@ -49,6 +49,7 @@ import com.animania.common.entities.generic.ai.GenericAIPanic;
 import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
+import com.animania.common.entities.goats.EntityAnimaniaGoat;
 import com.animania.common.entities.interfaces.IAnimaniaAnimalBase;
 import com.animania.common.entities.peacocks.ai.EntityAIWatchClosestFromSide;
 import com.animania.common.handler.ItemHandler;
@@ -91,26 +92,24 @@ public class EntityAnimaniaPeacock extends EntityAnimal implements TOPInfoProvid
 	{
 		super(worldIn);
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		if (!AnimaniaConfig.gameRules.ambianceMode)
-		{
-			this.tasks.addTask(1, new GenericAIFindWater<EntityAnimaniaPeacock>(this, 1.0D, null, EntityAnimaniaPeacock.class, true));
-			this.tasks.addTask(1, new GenericAIFindFood<EntityAnimaniaPeacock>(this, 1.0D, null, true));
+		this.tasks.addTask(0, new GenericAIPanic(this, 1.4D));
+		if (AnimaniaConfig.gameRules.animalsSleep) {
+			this.tasks.addTask(1, new GenericAISleep<EntityAnimaniaPeacock>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.peacockBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.peacockBed2), EntityAnimaniaPeacock.class));
 		}
-		this.tasks.addTask(2, new GenericAIPanic(this, 1.4D));
-		this.tasks.addTask(3, new GenericAITempt(this, 1.2D, false, EntityAnimaniaPeacock.TEMPTATION_ITEMS));
-		this.tasks.addTask(4, new GenericAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWatchClosestFromSide(this, EntityPlayer.class, 6.0F));
-		if (AnimaniaConfig.gameRules.animalsSleep)
-		{
-			this.tasks.addTask(6, new GenericAISleep<EntityAnimaniaPeacock>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.peacockBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.peacockBed2), EntityAnimaniaPeacock.class));
+		this.tasks.addTask(2, new GenericAITempt(this, 1.2D, false, EntityAnimaniaPeacock.TEMPTATION_ITEMS));
+		this.tasks.addTask(3, new GenericAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(4, new EntityAISwimming(this));
+		if (!AnimaniaConfig.gameRules.ambianceMode) {
+			this.tasks.addTask(5, new GenericAIFindWater<EntityAnimaniaPeacock>(this, 1.0D, null, EntityAnimaniaGoat.class, true));
+			this.tasks.addTask(5, new GenericAIFindFood<EntityAnimaniaPeacock>(this, 1.0, null, true));
 		}
-		this.tasks.addTask(7, new GenericAILookIdle(this));
 		if (AnimaniaConfig.gameRules.animalsCanAttackOthers)
 		{
-			this.tasks.addTask(8, new EntityAILeapAtTarget(this, 0.2F));
-			this.tasks.addTask(9, new EntityAIAttackMelee(this, 1.0D, true));
+			this.tasks.addTask(6, new EntityAILeapAtTarget(this, 0.2F));
+			this.tasks.addTask(7, new EntityAIAttackMelee(this, 1.0D, true));
 		}
+		this.tasks.addTask(8, new EntityAIWatchClosestFromSide(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(9, new GenericAILookIdle(this));
 		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, false, new Class[0]));
 		this.fedTimer = AnimaniaConfig.careAndFeeding.feedTimer * 2 + this.rand.nextInt(100);
 		this.wateredTimer = AnimaniaConfig.careAndFeeding.waterTimer * 2 + this.rand.nextInt(100);

@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -39,6 +40,7 @@ import net.minecraftforge.fluids.UniversalBucket;
 import com.animania.Animania;
 import com.animania.common.entities.AnimalContainer;
 import com.animania.common.entities.EntityGender;
+import com.animania.common.entities.generic.ai.GenericAIAvoidEntity;
 import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindSaltLick;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
@@ -48,6 +50,7 @@ import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIWatchClosest;
+import com.animania.common.entities.goats.EntityAnimaniaGoat;
 import com.animania.common.entities.interfaces.IAnimaniaAnimalBase;
 import com.animania.common.entities.pigs.ai.EntityAIFindMud;
 import com.animania.common.entities.pigs.ai.EntityAIPigSnuffle;
@@ -106,26 +109,24 @@ public class EntityAnimaniaPig extends EntityAnimal implements IAnimaniaAnimalBa
 	protected void initEntityAI()
 	{
 		this.entityAIEatGrass = new EntityAIPigSnuffle(this);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIFindMud(this, 1.2D));
-		this.tasks.addTask(2, new GenericAIWanderAvoidWater(this, 1.0D));
-		if (!AnimaniaConfig.gameRules.ambianceMode)
-		{
-			this.tasks.addTask(3, new GenericAIFindWater<EntityAnimaniaPig>(this, 1.0D, entityAIEatGrass, EntityAnimaniaPig.class));
-			this.tasks.addTask(3, new GenericAIFindFood<EntityAnimaniaPig>(this, 1.0D, entityAIEatGrass, true));
+		this.tasks.addTask(0, new GenericAIPanic(this, 1.5D));
+		if (AnimaniaConfig.gameRules.animalsSleep) {
+			this.tasks.addTask(1, new GenericAISleep<EntityAnimaniaPig>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.pigBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.pigBed2), EntityAnimaniaPig.class));
 		}
-		this.tasks.addTask(4, new GenericAIPanic(this, 1.5D));
-		if (AnimaniaConfig.gameRules.animalsSleep)
-		{
-			this.tasks.addTask(5, new GenericAISleep<EntityAnimaniaPig>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.pigBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.pigBed2), EntityAnimaniaPig.class));
+		this.tasks.addTask(2, new GenericAITempt(this, 1.2D, false, EntityAnimaniaGoat.TEMPTATION_ITEMS));
+		this.tasks.addTask(2, new GenericAITempt(this, 1.2D, false, EntityAnimaniaPig.TEMPTATION_ITEMS));
+		this.tasks.addTask(2, new EntityAITemptItemStack(this, 1.2d, UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, BlockHandler.fluidSlop)));
+		this.tasks.addTask(3, new GenericAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(4, new EntityAISwimming(this));
+		this.tasks.addTask(5, new EntityAIFindMud(this, 1.2D));
+		this.tasks.addTask(6, new GenericAIFindSaltLick(this, 1.0, entityAIEatGrass));
+		if (!AnimaniaConfig.gameRules.ambianceMode) {
+			this.tasks.addTask(7, new GenericAIFindWater<EntityAnimaniaPig>(this, 1.0D, entityAIEatGrass, EntityAnimaniaPig.class));
+			this.tasks.addTask(7, new GenericAIFindFood<EntityAnimaniaPig>(this, 1.0, entityAIEatGrass, true));
 		}
-		this.tasks.addTask(6, new GenericAITempt(this, 1.2D, Items.CARROT_ON_A_STICK, false));
-		this.tasks.addTask(7, new GenericAITempt(this, 1.2D, false, EntityAnimaniaPig.TEMPTATION_ITEMS));
-		this.tasks.addTask(7, new EntityAITemptItemStack(this, 1.2d, UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, BlockHandler.fluidSlop)));
 		this.tasks.addTask(8, this.entityAIEatGrass);
-		this.tasks.addTask(9, new GenericAIFindSaltLick(this, 1.0, entityAIEatGrass));
-		this.tasks.addTask(10, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(11, new GenericAILookIdle(this));
+		this.tasks.addTask(9, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(10, new GenericAILookIdle(this));
 		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, false, new Class[0]));
 
 	}

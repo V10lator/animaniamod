@@ -15,13 +15,18 @@ import com.animania.common.entities.EntityGender;
 import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
 import com.animania.common.entities.generic.ai.GenericAIFollowOwner;
+import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
+import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAISwimmingSmallCreatures;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIWatchClosest;
+import com.animania.common.entities.goats.EntityAnimaniaGoat;
 import com.animania.common.entities.interfaces.IAnimaniaAnimalBase;
+import com.animania.common.entities.rodents.ai.EntityAIFerretFindNests;
 import com.animania.common.entities.rodents.ai.EntityAILookIdleRodent;
+import com.animania.common.entities.rodents.ai.EntityAIRodentEat;
 import com.animania.common.entities.rodents.ai.EntityAISleepHamsters;
 import com.animania.common.handler.ItemHandler;
 import com.animania.common.handler.PatreonHandler;
@@ -38,8 +43,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIFleeSun;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -135,19 +142,24 @@ public class EntityHamster extends EntityTameable implements TOPInfoProviderRode
 	protected void initEntityAI()
 	{
 
-		this.tasks.addTask(1, new GenericAIPanic(this, 1.4D));
-		this.tasks.addTask(2, new GenericAISwimmingSmallCreatures(this));
-		if (!AnimaniaConfig.gameRules.ambianceMode)
-		{
-			this.tasks.addTask(3, new GenericAIFindWater(this, 1.0D, null, EntityHamster.class, true));
-			this.tasks.addTask(3, new GenericAIFindFood(this, 1.0D, null, false));
+		this.tasks.addTask(0, new GenericAIPanic(this, 1.4D));
+		this.tasks.addTask(1, new GenericAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+		if (AnimaniaConfig.gameRules.animalsSleep) {
+			this.tasks.addTask(2, new GenericAISleep<EntityHamster>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.hamsterBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.hamsterBed2), EntityFerretBase.class));
+		}
+		this.tasks.addTask(4, new GenericAITempt(this, 1.2D, false, EntityHamster.TEMPTATION_ITEMS));
+		this.tasks.addTask(5, new GenericAIWanderAvoidWater(this, 1.1D));
+		this.tasks.addTask(6, new GenericAISwimmingSmallCreatures(this));
+		if (!AnimaniaConfig.gameRules.ambianceMode) {
+			this.tasks.addTask(7, new GenericAIFindWater<EntityHamster>(this, 1.0D, null, EntityHamster.class, true));
+			this.tasks.addTask(7, new GenericAIFindFood<EntityHamster>(this, 1.0, null, false));
 		}
 		this.tasks.addTask(4, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(5, new GenericAIWanderAvoidWater(this, 1.1D));
-		this.tasks.addTask(6, new GenericAITempt(this, 1.2D, false, EntityHamster.TEMPTATION_ITEMS));
-		this.tasks.addTask(7, new GenericAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(8, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(9, new EntityAILookIdleRodent(this));
+		this.tasks.addTask(9, this.aiSit);
+		this.tasks.addTask(10, new EntityAILeapAtTarget(this, 0.2F));
+		this.tasks.addTask(11, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(12, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(13, new EntityAILookIdleRodent(this));
 		if (AnimaniaConfig.gameRules.animalsSleep)
 		{
 			this.tasks.addTask(10, new EntityAISleepHamsters(this, 0.8));

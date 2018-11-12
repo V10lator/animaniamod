@@ -19,8 +19,10 @@ import com.animania.common.entities.chickens.EntityChickOrpington;
 import com.animania.common.entities.chickens.EntityChickPlymouthRock;
 import com.animania.common.entities.chickens.EntityChickRhodeIslandRed;
 import com.animania.common.entities.chickens.EntityChickWyandotte;
+import com.animania.common.entities.generic.ai.GenericAIAvoidEntity;
 import com.animania.common.entities.generic.ai.GenericAIEatGrass;
 import com.animania.common.entities.generic.ai.GenericAIFindFood;
+import com.animania.common.entities.generic.ai.GenericAIFindSaltLick;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
 import com.animania.common.entities.generic.ai.GenericAIFollowOwner;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
@@ -31,6 +33,7 @@ import com.animania.common.entities.generic.ai.GenericAISwimmingSmallCreatures;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIWatchClosest;
+import com.animania.common.entities.goats.EntityAnimaniaGoat;
 import com.animania.common.entities.interfaces.IAnimaniaAnimalBase;
 import com.animania.common.entities.rodents.ai.EntityAIFerretFindNests;
 import com.animania.common.entities.rodents.ai.EntityAIRodentEat;
@@ -52,8 +55,10 @@ import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAISit;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -119,26 +124,26 @@ public class EntityFerretBase extends EntityTameable implements TOPInfoProviderR
 	{
 		this.aiSit = new EntityAISit(this);
 		this.entityAIEatGrass = new GenericAIEatGrass(this, false);
-		this.tasks.addTask(0, new GenericAISwimmingSmallCreatures(this));
-		if (!AnimaniaConfig.gameRules.ambianceMode) {
-			this.tasks.addTask(1, new GenericAIFindWater(this, 1.0D, entityAIEatGrass, EntityFerretBase.class, true));
-			this.tasks.addTask(2, new EntityAIFerretFindNests(this, 1.0D));
-			this.tasks.addTask(3, new GenericAIFindFood(this, 1.0D, entityAIEatGrass, false));
-		}
-		this.tasks.addTask(4, this.aiSit);
-		this.tasks.addTask(5, new EntityAILeapAtTarget(this, 0.2F));
-		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(7, new GenericAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(8, new GenericAIPanic(this, 1.5D));
-		this.tasks.addTask(9, new EntityAIRodentEat(this));
-		this.tasks.addTask(10, new GenericAITempt(this, 1.2D, false, EntityFerretBase.TEMPTATION_ITEMS));
-		this.tasks.addTask(11, this.entityAIEatGrass);
-		this.tasks.addTask(12, new GenericAIWanderAvoidWater(this, 1.2D));
-		this.tasks.addTask(13, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(14, new GenericAILookIdle(this));
+		this.tasks.addTask(0, new GenericAIPanic(this, 1.5D));
+		this.tasks.addTask(1, new GenericAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
 		if (AnimaniaConfig.gameRules.animalsSleep) {
-			this.tasks.addTask(15, new GenericAISleep(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.ferretBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.ferretBed2), EntityFerretBase.class));
+			this.tasks.addTask(2, new GenericAISleep<EntityFerretBase>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.ferretBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.ferretBed2), EntityFerretBase.class));
 		}
+		this.tasks.addTask(3, new EntityAIRodentEat(this));
+		this.tasks.addTask(4, new GenericAITempt(this, 1.2D, false, EntityFerretBase.TEMPTATION_ITEMS));
+		this.tasks.addTask(5, new GenericAIWanderAvoidWater(this, 1.2D));
+		this.tasks.addTask(6, new GenericAISwimmingSmallCreatures(this));
+		if (!AnimaniaConfig.gameRules.ambianceMode) {
+			this.tasks.addTask(7, new GenericAIFindWater<EntityFerretBase>(this, 1.0D, entityAIEatGrass, EntityFerretBase.class, true));
+			this.tasks.addTask(7, new EntityAIFerretFindNests(this, 1.0D));
+			this.tasks.addTask(7, new GenericAIFindFood<EntityFerretBase>(this, 1.0, entityAIEatGrass, false));
+		}
+		this.tasks.addTask(8, this.entityAIEatGrass);
+		this.tasks.addTask(9, this.aiSit);
+		this.tasks.addTask(10, new EntityAILeapAtTarget(this, 0.2F));
+		this.tasks.addTask(11, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(12, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(13, new GenericAILookIdle(this));
 		if (AnimaniaConfig.gameRules.animalsCanAttackOthers) {
 			this.targetTasks.addTask(1, new GenericAINearestAttackableTarget(this, EntityChickLeghorn.class, false));
 			this.targetTasks.addTask(2, new GenericAINearestAttackableTarget(this, EntityChickOrpington.class, false));

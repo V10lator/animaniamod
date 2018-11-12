@@ -39,7 +39,6 @@ import net.minecraftforge.fluids.UniversalBucket;
 import com.animania.Animania;
 import com.animania.common.entities.AnimalContainer;
 import com.animania.common.entities.EntityGender;
-import com.animania.common.entities.generic.ai.GenericAIAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindSaltLick;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
@@ -112,10 +111,10 @@ public class EntityAnimaniaPig extends EntityAnimal implements IAnimaniaAnimalBa
 		this.tasks.addTask(2, new GenericAIWanderAvoidWater(this, 1.0D));
 		if (!AnimaniaConfig.gameRules.ambianceMode)
 		{
-			this.tasks.addTask(2, new GenericAIFindWater<EntityAnimaniaPig>(this, 1.0D, entityAIEatGrass, EntityAnimaniaPig.class));
+			this.tasks.addTask(3, new GenericAIFindWater<EntityAnimaniaPig>(this, 1.0D, entityAIEatGrass, EntityAnimaniaPig.class));
 			this.tasks.addTask(3, new GenericAIFindFood<EntityAnimaniaPig>(this, 1.0D, entityAIEatGrass, true));
 		}
-		this.tasks.addTask(7, new GenericAIPanic(this, 1.5D));
+		this.tasks.addTask(4, new GenericAIPanic(this, 1.5D));
 		if (AnimaniaConfig.gameRules.animalsSleep)
 		{
 			this.tasks.addTask(5, new GenericAISleep<EntityAnimaniaPig>(this, 0.8, AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.pigBed), AnimaniaHelper.getBlock(AnimaniaConfig.careAndFeeding.pigBed2), EntityAnimaniaPig.class));
@@ -126,7 +125,6 @@ public class EntityAnimaniaPig extends EntityAnimal implements IAnimaniaAnimalBa
 		this.tasks.addTask(8, this.entityAIEatGrass);
 		this.tasks.addTask(9, new GenericAIFindSaltLick(this, 1.0, entityAIEatGrass));
 		this.tasks.addTask(10, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(14, new GenericAIAvoidWater(this));
 		this.tasks.addTask(11, new GenericAILookIdle(this));
 		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, false, new Class[0]));
 

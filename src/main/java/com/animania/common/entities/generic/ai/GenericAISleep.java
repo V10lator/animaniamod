@@ -1,6 +1,7 @@
 package com.animania.common.entities.generic.ai;
 
 import com.animania.common.entities.interfaces.ISleeping;
+import com.animania.common.helper.WeakBlockState;
 import com.animania.config.AnimaniaConfig;
 
 import net.minecraft.block.Block;
@@ -111,15 +112,14 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 	@Override
 	protected boolean shouldMoveTo(World worldIn, BlockPos pos)
 	{
-		IBlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
+		WeakBlockState ws = GenericAISearchBlock.getWeakState(worldIn, pos);
 		
-		if(block == this.bedBlock)
+		if(ws.block == this.bedBlock)
 			return true;
 		
 		searchFail++;
 		
-		if(block == this.bedBlock2 && searchFail > 300)
+		if(ws.block == this.bedBlock2 && searchFail > 300)
 			return true;
 			
 		return false;

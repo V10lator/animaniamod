@@ -54,7 +54,6 @@ public class EntityAIAttackMeleeBulls extends EntityAIBase
 					eb.setSleeping(false);
 				} else {
 					eb.setFighting(true);
-					eb.entityAIEatGrass.eatingGrassTimer = 0;
 				}
 			}
 			this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(entitylivingbase);

@@ -14,12 +14,10 @@ import com.animania.common.entities.generic.ai.GenericAIEatGrass;
 import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
 import com.animania.common.entities.generic.ai.GenericAIFollowOwner;
-import com.animania.common.entities.generic.ai.GenericAIHurtByTarget;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAINearestAttackableTarget;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
 import com.animania.common.entities.generic.ai.GenericAISleep;
-import com.animania.common.entities.generic.ai.GenericAISwim;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIWatchClosest;
@@ -35,8 +33,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAISit;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,22 +98,22 @@ public class EntityAnimaniaCat extends EntityTameable implements IAnimaniaAnimal
 	{
 		this.aiSit = new EntityAISit(this);
 		this.entityAIEatGrass = new GenericAIEatGrass(this, false);
-		this.tasks.addTask(0, new GenericAISwim(this));
+		this.tasks.addTask(0, new EntityAISwimming(this));
 		if (!AnimaniaConfig.gameRules.ambianceMode)
 		{
 			this.tasks.addTask(1, new GenericAIFindWater(this, 1.0D, entityAIEatGrass, EntityAnimaniaCat.class, true));
-			this.tasks.addTask(3, new GenericAIFindFood(this, 1.0D, entityAIEatGrass, false));
+			this.tasks.addTask(2, new GenericAIFindFood(this, 1.0D, entityAIEatGrass, false));
 		}
-		this.tasks.addTask(4, this.aiSit);
-		this.tasks.addTask(5, new EntityAILeapAtTarget(this, 0.4F));
-		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.5D, true));
-		this.tasks.addTask(7, new GenericAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(8, new GenericAIPanic(this, 1.5D));
-		this.tasks.addTask(10, new GenericAITempt(this, 1.2D, false, EntityFerretBase.TEMPTATION_ITEMS)); //TODO
-		this.tasks.addTask(11, this.entityAIEatGrass);
-		this.tasks.addTask(12, new GenericAIWanderAvoidWater(this, 1.2D));
-		this.tasks.addTask(13, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(14, new GenericAILookIdle(this));
+		this.tasks.addTask(3, this.aiSit);
+		this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
+		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.5D, true));
+		this.tasks.addTask(6, new GenericAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+		this.tasks.addTask(7, new GenericAIPanic(this, 1.5D));
+		this.tasks.addTask(8, new GenericAITempt(this, 1.2D, false, EntityFerretBase.TEMPTATION_ITEMS)); //TODO
+		this.tasks.addTask(9, this.entityAIEatGrass);
+		this.tasks.addTask(10, new GenericAIWanderAvoidWater(this, 1.2D));
+		this.tasks.addTask(12, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(13, new GenericAILookIdle(this));
 		this.tasks.addTask(15, new GenericAIAvoidWater(this));
 		if (AnimaniaConfig.gameRules.animalsSleep)
 		{
@@ -127,7 +127,7 @@ public class EntityAnimaniaCat extends EntityTameable implements IAnimaniaAnimal
 			this.targetTasks.addTask(7, new GenericAINearestAttackableTarget(this, EntityFrogs.class, false));
 			this.targetTasks.addTask(8, new GenericAINearestAttackableTarget(this, EntityToad.class, false));
 		}
-		this.targetTasks.addTask(9, new GenericAIHurtByTarget(this, false, new Class[0]));
+		this.targetTasks.addTask(9, new EntityAIHurtByTarget(this, false, new Class[0]));
 	}
 
 	@Override

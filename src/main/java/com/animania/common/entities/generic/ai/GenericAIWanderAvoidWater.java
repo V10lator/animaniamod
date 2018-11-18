@@ -19,7 +19,10 @@ public class GenericAIWanderAvoidWater extends EntityAIWanderAvoidWater
     		return false;
 
 		boolean foundTarget = super.shouldExecute();
-		if(foundTarget && entity.world.isRaining() && entity.world.canSeeSky(new BlockPos(this.x, this.y, this.z)))
+		if(foundTarget &&
+				entity.world.isRaining() &&
+				!entity.world.canSeeSky(entity.getPosition()) &&
+				entity.world.canSeeSky(new BlockPos(this.x, this.y, this.z)))
 		{
 			foundTarget = false;
 			this.mustUpdate = true;

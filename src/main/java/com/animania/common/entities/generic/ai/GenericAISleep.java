@@ -51,7 +51,7 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 			return false;
 		}
 
-		if (this.entity.getRNG().nextInt(3) == 0)
+		if (!entity.world.isDaytime() && this.entity.getRNG().nextInt(3) == 0)
 		{
 			boolean foundTarget = super.shouldExecute();
 			if(foundTarget && entity.world.isRaining() && entity.world.canSeeSky(this.seekingBlockPos.up()))

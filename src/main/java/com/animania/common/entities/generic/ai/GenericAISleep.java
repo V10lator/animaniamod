@@ -49,35 +49,15 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 		else if (delay > AnimaniaConfig.gameRules.ticksBetweenAIFirings)
 		{
 
-			if (entity.world.isDaytime())
+			if (entity.getSleeping())
 			{
-				if (entity.getSleeping())
+				if (entity.world.isDaytime() ||
+						entity.isBurning() ||
+						(entity.world.isRaining() && entity.world.canSeeSky(entity.getPosition()) && entity.getRNG().nextInt(10) < 4))
 				{
 					entity.setSleeping(false);
 					entity.setSleepingPos(NO_POS);
-					this.delay = 0;
 				}
-				return false;
-			}
-
-			if (entity.getSleeping() && entity.isBurning())
-			{
-				entity.setSleeping(false);
-				entity.setSleepingPos(NO_POS);
-				this.delay = 0;
-				return false;
-			}
-
-			if (entity.getSleeping() && entity.world.isRaining() && entity.world.canSeeSky(entity.getPosition()) && entity.getRNG().nextInt(10) < 4)
-			{
-				entity.setSleeping(false);
-				entity.setSleepingPos(NO_POS);
-				this.delay = 0;
-				return false;
-			}
-
-			if (entity.getSleeping())
-			{
 				this.delay = 0;
 				return false;
 			}

@@ -26,14 +26,8 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 	{
 		if(world.isRainingAt(creature.getPosition()))
 		{
-			ISleeping sleeper = (ISleeping)creature;
-			if(sleeper.getSleeping())
-			{
-				if(creature.getRNG().nextInt(10) < 4)
-					return false;
-				sleeper.setSleeping(false);
-				sleeper.setSleepingPos(NO_POS);
-			}
+			if(((ISleeping)creature).getSleeping())
+				return false;
 			return super.shouldExecute();
 		}
 		return false;

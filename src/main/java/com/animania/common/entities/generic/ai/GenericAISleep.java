@@ -17,61 +17,50 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 {
 
 	private final T entity;
-	private final double speed;
 	private int delay;
-	private boolean isRunning;
 
 	private Block bedBlock;
 	private Block bedBlock2;
-
-	private Class parentClass;
 			
 	public GenericAISleep(T entity, double speedIn, Block bed1, Block bed2, Class parentClass)
 	{
 		super(entity, speedIn, AnimaniaConfig.gameRules.aiBlockSearchRange, true, EnumFacing.UP);
 		this.entity = entity;
-		this.speed = speedIn;
 		this.setMutexBits(3);
 		this.delay = 0;
 		this.bedBlock = bed1;
 		this.bedBlock2 = bed2;
-		this.parentClass = parentClass;
 	}
 
 	public boolean shouldExecute()
 	{
-		delay++;
-
-		if (this.delay <= AnimaniaConfig.gameRules.ticksBetweenAIFirings + entity.getRNG().nextInt(100))
+		if (++this.delay <= AnimaniaConfig.gameRules.ticksBetweenAIFirings + entity.getRNG().nextInt(100))
 		{
 			return false;
 		}
-		else if (delay > AnimaniaConfig.gameRules.ticksBetweenAIFirings)
+		if (entity.getSleeping())
 		{
-
-			if (entity.getSleeping())
+			if (entity.world.isDaytime() ||
+					entity.isBurning() ||
+					(entity.world.isRaining() && entity.world.canSeeSky(entity.getPosition())))
 			{
-				if (entity.world.isDaytime() ||
-						entity.isBurning() ||
-						(entity.world.isRaining() && entity.world.canSeeSky(entity.getPosition()) && entity.getRNG().nextInt(10) < 4))
-				{
-					entity.setSleeping(false);
-					entity.setSleepingPos(NO_POS);
-				}
+				entity.setSleeping(false);
+				entity.setSleepingPos(NO_POS);
+			}
+			this.delay = 0;
+			return false;
+		}
+
+		if (this.entity.getRNG().nextInt(3) == 0)
+		{
+			boolean foundTarget = super.shouldExecute();
+			if(foundTarget && entity.world.isRaining() && entity.world.canSeeSky(this.seekingBlockPos.up()))
+			{
+				foundTarget  = false;
+				this.seekingBlockPos = NO_POS;
 				this.delay = 0;
-				return false;
 			}
-
-			if (this.entity.getRNG().nextInt(3) == 0)
-			{
-				boolean foundTarget = super.shouldExecute();
-				if(foundTarget && entity.world.isRaining() && entity.world.canSeeSky(this.seekingBlockPos.up()))
-				{
-					foundTarget  = false;
-					this.seekingBlockPos = NO_POS;
-				}
-				return foundTarget;
-			}
+			return foundTarget;
 		}
 		
 		return false;

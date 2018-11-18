@@ -14,6 +14,7 @@ import com.animania.common.entities.generic.ai.GenericAIFindSaltLick;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
+import com.animania.common.entities.generic.ai.GenericAISearchShelter;
 import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
@@ -84,8 +85,9 @@ public class EntityAnimaniaCow extends EntityCow implements IAnimaniaAnimalBase
 		if (!AnimaniaConfig.gameRules.ambianceMode)
 		{
 			this.tasks.addTask(2, new GenericAIFindWater<EntityAnimaniaCow>(this, 1.0D, entityAIEatGrass, EntityAnimaniaCow.class));
-			this.tasks.addTask(3, new GenericAIFindFood<EntityAnimaniaCow>(this, 1.0, entityAIEatGrass, true));
+			this.tasks.addTask(2, new GenericAIFindFood<EntityAnimaniaCow>(this, 1.0, entityAIEatGrass, true));
 		}
+		this.tasks.addTask(3, new GenericAISearchShelter<EntityAnimaniaCow>(this, 1.0D));
 		this.tasks.addTask(4, new GenericAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(5, new EntityAISwimming(this));
 		this.tasks.addTask(7, new GenericAITempt<EntityAnimaniaCow>(this, 1.25D, false, EntityAnimaniaCow.TEMPTATION_ITEMS));

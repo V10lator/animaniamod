@@ -14,6 +14,7 @@ import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
+import com.animania.common.entities.generic.ai.GenericAISearchShelter;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
 import com.animania.common.entities.generic.ai.GenericAIWatchClosest;
@@ -124,12 +125,13 @@ public class EntityAnimaniaRabbit extends EntityRabbit implements IAnimaniaAnima
 		if (!AnimaniaConfig.gameRules.ambianceMode)
 		{
 			this.tasks.addTask(2, new GenericAIFindWater<EntityAnimaniaRabbit>(this, 1.4D, entityAIEatGrass, EntityAnimaniaRabbit.class, true));
-			this.tasks.addTask(3, new GenericAIFindFood<EntityAnimaniaRabbit>(this, 1.4D, entityAIEatGrass, true));
+			this.tasks.addTask(2, new GenericAIFindFood<EntityAnimaniaRabbit>(this, 1.4D, entityAIEatGrass, true));
 		}
 
 		if (!this.getCustomNameTag().equals("Killer"))
 		{
-			this.tasks.addTask(3, new GenericAIPanic<EntityAnimaniaRabbit>(this, 2.5D));
+			this.tasks.addTask(1, new GenericAIPanic<EntityAnimaniaRabbit>(this, 2.5D));
+			this.tasks.addTask(3, new GenericAISearchShelter<EntityAnimaniaRabbit>(this, 2.5D));
 			this.tasks.addTask(4, new GenericAIWanderAvoidWater(this, 1.8D));
 			this.tasks.addTask(5, new EntityAISwimming(this));
 			this.tasks.addTask(7, new GenericAITempt<EntityAnimaniaRabbit>(this, 1.25D, false, EntityAnimaniaRabbit.TEMPTATION_ITEMS));

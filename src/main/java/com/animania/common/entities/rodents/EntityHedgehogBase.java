@@ -23,6 +23,7 @@ import com.animania.common.entities.generic.ai.GenericAIFollowOwner;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAINearestAttackableTarget;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
+import com.animania.common.entities.generic.ai.GenericAISearchShelter;
 import com.animania.common.entities.generic.ai.GenericAISwimmingSmallCreatures;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
@@ -138,6 +139,7 @@ public class EntityHedgehogBase extends EntityTameable implements TOPInfoProvide
 		}
 		this.tasks.addTask(5, this.aiSit);
 		this.tasks.addTask(6, new EntityAIFleeSun(this, 1.0D));
+		this.tasks.addTask(6, new GenericAISearchShelter<EntityHedgehogBase>(this, 1.0D));
 		this.tasks.addTask(7, new EntityAILeapAtTarget(this, 0.2F));
 		this.tasks.addTask(8, new EntityAIAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(9, new GenericAITempt<EntityHedgehogBase>(this, 1.2D, false, EntityHedgehogBase.TEMPTATION_ITEMS));

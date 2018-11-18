@@ -26,6 +26,7 @@ import com.animania.common.entities.generic.ai.GenericAIFollowOwner;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAINearestAttackableTarget;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
+import com.animania.common.entities.generic.ai.GenericAISearchShelter;
 import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAISwimmingSmallCreatures;
 import com.animania.common.entities.generic.ai.GenericAITempt;
@@ -121,10 +122,11 @@ public class EntityFerretBase extends EntityTameable implements TOPInfoProviderR
 	{
 		this.aiSit = new EntityAISit(this);
 		this.tasks.addTask(0, new GenericAISwimmingSmallCreatures(this));
+		this.tasks.addTask(1, new GenericAISearchShelter<EntityFerretBase>(this, 1.0D));
 		if (!AnimaniaConfig.gameRules.ambianceMode) {
-			this.tasks.addTask(1, new GenericAIFindWater<EntityFerretBase>(this, 1.0D, entityAIEatGrass, EntityFerretBase.class, true));
+			this.tasks.addTask(2, new GenericAIFindWater<EntityFerretBase>(this, 1.0D, entityAIEatGrass, EntityFerretBase.class, true));
 			this.tasks.addTask(2, new EntityAIFerretFindNests(this, 1.0D));
-			this.tasks.addTask(3, new GenericAIFindFood<EntityFerretBase>(this, 1.0D, entityAIEatGrass, false));
+			this.tasks.addTask(2, new GenericAIFindFood<EntityFerretBase>(this, 1.0D, entityAIEatGrass, false));
 		}
 		this.tasks.addTask(4, this.aiSit);
 		this.tasks.addTask(5, new EntityAILeapAtTarget(this, 0.2F));

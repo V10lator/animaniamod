@@ -18,11 +18,7 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 	@Override
 	protected boolean shouldMoveTo(World world, BlockPos pos)
 	{
-		return !world.canSeeSky(pos) &&
-				!world.canSeeSky(pos.north()) &&
-				!world.canSeeSky(pos.east()) &&
-				!world.canSeeSky(pos.south()) &&
-				!world.canSeeSky(pos.west());
+		return !world.canSeeSky(pos.up());
 	}
 
 	@Override
@@ -33,7 +29,7 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 			ISleeping sleeper = (ISleeping)creature;
 			if(sleeper.getSleeping())
 			{
-				if(creature.getRNG().nextInt(10) < 8)
+				if(creature.getRNG().nextInt(10) < 4)
 					return false;
 				sleeper.setSleeping(false);
 				sleeper.setSleepingPos(NO_POS);

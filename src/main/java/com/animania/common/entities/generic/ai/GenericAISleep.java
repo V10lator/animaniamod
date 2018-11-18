@@ -68,6 +68,14 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 				return false;
 			}
 
+			if (entity.getSleeping() && entity.world.isRaining() && entity.world.canSeeSky(entity.getPosition()) && entity.getRNG().nextInt(10) < 4)
+			{
+				entity.setSleeping(false);
+				entity.setSleepingPos(NO_POS);
+				this.delay = 0;
+				return false;
+			}
+
 			if (entity.getSleeping())
 			{
 				this.delay = 0;
@@ -77,7 +85,7 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 			if (this.entity.getRNG().nextInt(3) == 0)
 			{
 				boolean foundTarget = super.shouldExecute();
-				if(foundTarget && entity.world.isRaining() && entity.world.canSeeSky(this.seekingBlockPos))
+				if(foundTarget && entity.world.isRaining() && entity.world.canSeeSky(this.seekingBlockPos.up()))
 				{
 					foundTarget  = false;
 					this.seekingBlockPos = NO_POS;

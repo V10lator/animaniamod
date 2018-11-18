@@ -22,7 +22,7 @@ public class GenericAIWanderAvoidWater extends EntityAIWanderAvoidWater
 		if(foundTarget &&
 				entity.world.isRaining() &&
 				!entity.world.canSeeSky(entity.getPosition()) &&
-				entity.world.canSeeSky(new BlockPos(this.x, this.y, this.z)))
+				entity.world.canSeeSky(new BlockPos(this.x, this.y + 1, this.z)))
 		{
 			foundTarget = false;
 			this.mustUpdate = true;

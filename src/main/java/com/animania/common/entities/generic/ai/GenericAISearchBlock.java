@@ -1,6 +1,5 @@
 package com.animania.common.entities.generic.ai;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,15 +7,10 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public abstract class GenericAISearchBlock extends EntityAIBase
 {
@@ -212,32 +206,6 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 		}
 
 		return false;
-	}
-
-	protected boolean pathExists(BlockPos start, BlockPos end)
-	{
-		try
-		{
-			PathPoint startPoint = new PathPoint(start.getX(), start.getY(), start.getZ());
-			PathPoint endPoint = new PathPoint(end.getX(), end.getY(), end.getZ());
-
-			PathNavigate navigate = this.creature.getNavigator();
-			Method getPathFinder = ReflectionHelper.findMethod(PathNavigate.class, "getPathFinder", "func_179679_a");
-			Method getPath = ReflectionHelper.findMethod(PathFinder.class, "findPath", "func_186336_a", PathPoint.class, PathPoint.class, float.class);
-
-			getPathFinder.setAccessible(true);
-			getPath.setAccessible(true);
-
-			PathFinder finder = (PathFinder) getPathFinder.invoke(navigate);
-			Path p = (Path) getPath.invoke(finder, startPoint, endPoint, (float) searchRange);
-
-			return p != null;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	/**

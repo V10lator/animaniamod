@@ -25,7 +25,6 @@ public class GenericAIWanderAvoidWater extends EntityAIWanderAvoidWater
 				entity.world.canSeeSky(new BlockPos(this.x, this.y + 1, this.z)))
 		{
 			foundTarget = false;
-			this.mustUpdate = true;
 		}
 
 		return foundTarget;

@@ -24,12 +24,8 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 	@Override
 	public boolean shouldExecute()
 	{
-		if(world.isRainingAt(creature.getPosition()))
-		{
-			if(((ISleeping)creature).getSleeping())
-				return false;
+		if(world.isRainingAt(creature.getPosition()) && !((ISleeping)creature).getSleeping())
 			return super.shouldExecute();
-		}
 		return false;
 	}
 }

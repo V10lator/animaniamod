@@ -46,6 +46,7 @@ import com.animania.common.entities.generic.ai.GenericAIFindFood;
 import com.animania.common.entities.generic.ai.GenericAIFindWater;
 import com.animania.common.entities.generic.ai.GenericAILookIdle;
 import com.animania.common.entities.generic.ai.GenericAIPanic;
+import com.animania.common.entities.generic.ai.GenericAISearchShelter;
 import com.animania.common.entities.generic.ai.GenericAISleep;
 import com.animania.common.entities.generic.ai.GenericAITempt;
 import com.animania.common.entities.generic.ai.GenericAIWanderAvoidWater;
@@ -99,6 +100,7 @@ public class EntityAnimaniaPeacock extends EntityAnimal implements TOPInfoProvid
 		}
 		this.tasks.addTask(2, new GenericAIPanic<EntityAnimaniaPeacock>(this, 1.4D));
 		this.tasks.addTask(3, new GenericAITempt<EntityAnimaniaPeacock>(this, 1.2D, false, EntityAnimaniaPeacock.TEMPTATION_ITEMS));
+		this.tasks.addTask(4, new GenericAISearchShelter<EntityAnimaniaPeacock>(this, 1.2D));
 		this.tasks.addTask(4, new GenericAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(5, new EntityAIWatchClosestFromSide(this, EntityPlayer.class, 6.0F));
 		if (AnimaniaConfig.gameRules.animalsSleep)

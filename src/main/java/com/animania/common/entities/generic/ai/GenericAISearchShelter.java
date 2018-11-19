@@ -13,6 +13,7 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 	public GenericAISearchShelter(T creature, double speedIn)
 	{
 		super(creature, speedIn, AnimaniaConfig.gameRules.aiBlockSearchRange, false, EnumFacing.UP);
+		this.setMutexBits(3);
 	}
 
 	@Override

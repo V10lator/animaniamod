@@ -26,7 +26,6 @@ public class GenericAISleep<T extends EntityCreature & ISleeping> extends Generi
 	{
 		super(entity, speedIn, AnimaniaConfig.gameRules.aiBlockSearchRange, true, EnumFacing.UP);
 		this.entity = entity;
-		this.setMutexBits(3);
 		this.delay = 0;
 		this.bedBlock = bed1;
 		this.bedBlock2 = bed2;

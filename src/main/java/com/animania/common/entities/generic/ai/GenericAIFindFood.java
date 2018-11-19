@@ -30,7 +30,6 @@ public class GenericAIFindFood<T extends EntityCreature & IFoodEating & ISleepin
 	{
 		super(entity, speedIn, AnimaniaConfig.gameRules.aiBlockSearchRange, eatBlocks, EnumFacing.HORIZONTALS);
 		this.entity = entity;
-		this.setMutexBits(3);
 		this.foodDelay = 0;
 		this.eatAI = eatAI;
 		this.eatBlocks = eatBlocks;

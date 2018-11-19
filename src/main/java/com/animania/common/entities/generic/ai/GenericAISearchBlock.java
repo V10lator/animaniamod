@@ -43,7 +43,7 @@ public abstract class GenericAISearchBlock extends EntityAIBase
 			this.destinationOffset.add(f);
 		this.world = creature.world;
 		this.hasSecondary = hasSecondary;
-		// this.setMutexBits(5);
+		this.setMutexBits(3);
 	}
 	
 	public GenericAISearchBlock(EntityCreature creature, double speedIn, int range, EnumFacing... destinationOffset)

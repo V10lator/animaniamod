@@ -39,7 +39,6 @@ public class GenericAIFindWater<T extends EntityCreature & IFoodEating & ISleepi
 		super(entity, speedIn, AnimaniaConfig.gameRules.aiBlockSearchRange, true, EnumFacing.UP);
 		this.entity = entity;
 		this.speed = speedIn;
-		this.setMutexBits(3);
 		this.waterFindTimer = 0;
 		this.eatAI = eatAI;
 		this.parentClass = parentClass;

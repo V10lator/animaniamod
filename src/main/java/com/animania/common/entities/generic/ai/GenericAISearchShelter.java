@@ -3,6 +3,7 @@ package com.animania.common.entities.generic.ai;
 import com.animania.common.entities.interfaces.ISleeping;
 import com.animania.config.AnimaniaConfig;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +19,12 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 	@Override
 	protected boolean shouldMoveTo(World world, BlockPos pos)
 	{
-		return !world.canSeeSky(pos.up());
+		if(!world.canSeeSky(pos.up()))
+		{
+			Material mat = world.getBlockState(pos).getMaterial();
+			return mat != Material.WATER && mat != Material.LAVA;
+		}
+		return false;
 	}
 
 	@Override

@@ -91,9 +91,9 @@ public class EntityAnimaniaChicken extends EntityChicken implements IAnimaniaAni
 			this.tasks.addTask(2, new GenericAIFindWater<EntityAnimaniaChicken>(this, 1.0D, null, EntityAnimaniaChicken.class, true));
 			this.tasks.addTask(3, new GenericAIFindFood<EntityAnimaniaChicken>(this, 1.0D, null, true));
 		}
-		this.tasks.addTask(4, new GenericAITempt<EntityAnimaniaChicken>(this, 1.2D, false, EntityAnimaniaChicken.TEMPTATION_ITEMS));
-		this.tasks.addTask(5, new GenericAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(6, new GenericAISearchShelter<EntityAnimaniaChicken>(this, 1.0D));
+		this.tasks.addTask(4, new GenericAISearchShelter<EntityAnimaniaChicken>(this, 1.0D));
+		this.tasks.addTask(5, new GenericAITempt<EntityAnimaniaChicken>(this, 1.2D, false, EntityAnimaniaChicken.TEMPTATION_ITEMS));
+		this.tasks.addTask(6, new GenericAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosestFromSide(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(11, new GenericAILookIdle<EntityAnimaniaChicken>(this));
 		if (AnimaniaConfig.gameRules.animalsSleep) {

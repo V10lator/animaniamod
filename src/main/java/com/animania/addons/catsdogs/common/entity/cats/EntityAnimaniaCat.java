@@ -104,14 +104,14 @@ public class EntityAnimaniaCat extends EntityTameable implements IAnimaniaAnimal
 			this.tasks.addTask(1, new GenericAIFindWater<EntityAnimaniaCat>(this, 1.0D, entityAIEatGrass, EntityAnimaniaCat.class, true));
 			this.tasks.addTask(1, new GenericAIFindFood<EntityAnimaniaCat>(this, 1.0D, entityAIEatGrass, false));
 		}
-		this.tasks.addTask(2, this.aiSit);
-		this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-		this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.5D, true));
-		this.tasks.addTask(5, new GenericAIFollowOwner<EntityAnimaniaCat>(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(6, new GenericAIPanic<EntityAnimaniaCat>(this, 1.5D));
-		this.tasks.addTask(7, new GenericAITempt<EntityAnimaniaCat>(this, 1.2D, false, EntityFerretBase.TEMPTATION_ITEMS)); //TODO
-		this.tasks.addTask(8, this.entityAIEatGrass);
-		this.tasks.addTask(9, new GenericAISearchShelter<EntityAnimaniaCat>(this, 1.5D));
+		this.tasks.addTask(2, new GenericAISearchShelter<EntityAnimaniaCat>(this, 1.5D));
+		this.tasks.addTask(3, this.aiSit);
+		this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
+		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.5D, true));
+		this.tasks.addTask(6, new GenericAIFollowOwner<EntityAnimaniaCat>(this, 1.0D, 10.0F, 2.0F));
+		this.tasks.addTask(7, new GenericAIPanic<EntityAnimaniaCat>(this, 1.5D));
+		this.tasks.addTask(8, new GenericAITempt<EntityAnimaniaCat>(this, 1.2D, false, EntityFerretBase.TEMPTATION_ITEMS)); //TODO
+		this.tasks.addTask(9, this.entityAIEatGrass);
 		this.tasks.addTask(10, new GenericAIWanderAvoidWater(this, 1.2D));
 		this.tasks.addTask(11, new GenericAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(12, new GenericAILookIdle<EntityAnimaniaCat>(this));

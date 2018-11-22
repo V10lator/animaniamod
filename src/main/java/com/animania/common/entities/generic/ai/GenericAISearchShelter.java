@@ -11,9 +11,14 @@ import net.minecraft.world.World;
 
 public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extends GenericAISearchBlock
 {
+	private T creature;
+	private int delay;
+
 	public GenericAISearchShelter(T creature, double speedIn)
 	{
 		super(creature, speedIn, AnimaniaConfig.gameRules.aiBlockSearchRange, false, EnumFacing.UP);
+		this.creature = creature;
+		this.delay = 0;
 	}
 
 	@Override
@@ -30,6 +35,19 @@ public class GenericAISearchShelter<T extends EntityCreature & ISleeping> extend
 	@Override
 	public boolean shouldExecute()
 	{
-		return world.isRainingAt(creature.getPosition()) && !((ISleeping)creature).getSleeping() ? super.shouldExecute() : false;
+		if (++delay <= AnimaniaConfig.gameRules.ticksBetweenAIFirings)
+			return false;
+
+		if (creature.getSleeping() || !world.isRainingAt(creature.getPosition()))
+		{
+			delay = 0;
+			return false;
+		}
+
+		if (creature.getRNG().nextInt(3) != 0)
+			return false;
+
+		delay = 0;
+		return super.shouldExecute();
 	}
 }
